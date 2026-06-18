@@ -1,0 +1,7 @@
+# Logs e artefatos de build do livemedia-creator / anaconda (gerados a cada
+# build, nao fazem parte do codigo-fonte)
+anaconda/
+*.log
+
+# RPM gerado localmente (ver rpm/build-rpm.sh) e repositorio local de build
+*.rpm
