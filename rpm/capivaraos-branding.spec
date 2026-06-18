@@ -689,7 +689,7 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
-* Thu Jun 18 2026 CapivaraOS Project <contato@capivaraos.org> - 1.1.2-1
+* Thu Jun 18 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.2-1
 - Corrige plasma-welcome aparecendo no primeiro login (chave LastSeenVersion)
 - Corrige tema Plymouth sem logo/animacao (plymouth-plugin-script ausente)
 - Corrige dock inferior duplicado por alguns segundos apos login
@@ -697,5 +697,5 @@ done
 - Corrige titulo GRUB/BLS revertendo para "Fedora Linux" apos updates do
   sistema (file trigger em /etc/os-release)
 
-* Sun Jun 14 2026 CapivaraOS Project <contato@capivaraos.org> - 1.1.0-1
+* Sun Jun 14 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.0-1
 - Versao inicial para Fedora 44 (portado do CapivaraOS Marsh / Debian trixie)
