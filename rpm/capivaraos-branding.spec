@@ -608,6 +608,63 @@ Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
 
+# ── Reaplica os-release apos qualquer atualizacao futura do sistema ────────
+# Como /etc/os-release continua "pertencendo" ao fedora-release-common no
+# rpmdb (so sobrescrevemos o conteudo em %posttrans, sem declarar o arquivo
+# em %files, para evitar conflito na transacao original da ISO), um "dnf
+# update" no sistema instalado que toque o fedora-release-common (mesmo so
+# por dependencia) reescreve o arquivo de volta para o conteudo padrao do
+# Fedora. Se isso ocorrer na MESMA transacao em que um kernel novo e
+# instalado, o titulo GRUB/BLS desse kernel (gerado pelo kernel-install a
+# partir de NAME/VERSION do os-release) fica gravado como "Fedora Linux ...
+# 44 (Forty Four)" em vez de "CapivaraOS ... Marsh 1.1.0" -- e fica preso
+# assim permanentemente, mesmo depois do os-release ser corrigido.
+#
+# Este file trigger dispara sempre que qualquer pacote da transacao tocar em
+# /etc/os-release, reescreve nosso conteudo, e regenera a entrada BLS de
+# todos os kernels instalados (kernel-install add) para garantir que o
+# titulo reflita o os-release correto independente da ordem dos scriptlets.
+%transfiletriggerin -- %{_sysconfdir}/os-release
+cat > %{_sysconfdir}/os-release << 'EOF'
+NAME="CapivaraOS"
+VERSION="Marsh 1.1.0"
+RELEASE_TYPE=stable
+ID=capivaraos
+ID_LIKE=fedora
+VERSION_ID=44
+VERSION_CODENAME=marsh
+PLATFORM_ID="platform:f44"
+PRETTY_NAME="CapivaraOS"
+ANSI_COLOR="0;32"
+LOGO=capivaraos-full-logo
+CPE_NAME="cpe:/o:capivaraos:capivaraos:44"
+DEFAULT_HOSTNAME=capivaraos
+HOME_URL="https://capivaraos.org"
+DOCUMENTATION_URL="https://capivaraos.org"
+SUPPORT_URL="https://capivaraos.org"
+BUG_REPORT_URL="https://capivaraos.org"
+REDHAT_BUGZILLA_PRODUCT="Fedora"
+REDHAT_BUGZILLA_PRODUCT_VERSION=44
+REDHAT_SUPPORT_PRODUCT="Fedora"
+REDHAT_SUPPORT_PRODUCT_VERSION=44
+VARIANT="Marsh 1.1.0"
+VARIANT_ID=marsh
+EOF
+
+cat > %{_sysconfdir}/issue << 'EOF'
+CapivaraOS Marsh 1.1.0 \n \l
+
+EOF
+
+cat > %{_sysconfdir}/issue.net << 'EOF'
+CapivaraOS Marsh 1.1.0
+EOF
+
+for kver in $(ls /lib/modules 2>/dev/null); do
+    [ -f "/lib/modules/${kver}/vmlinuz" ] && \
+        kernel-install add "${kver}" "/lib/modules/${kver}/vmlinuz" >/dev/null 2>&1 || true
+done
+
 %files
 %license backgrounds/CREDITOS.txt
 %{_datadir}/backgrounds/capivaraos/
