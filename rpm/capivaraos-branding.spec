@@ -12,7 +12,7 @@
 # exigem git clone de repositórios externos durante o build da imagem.
 
 Name:           capivaraos-branding
-Version:        1.1.0
+Version:        1.1.2
 Release:        1%{?dist}
 Summary:        Identidade visual, wallpapers e tema padrão do CapivaraOS Marsh
 
@@ -566,7 +566,7 @@ plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
 # prevalece independente da ordem de instalacao dos pacotes.
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.1.0"
+VERSION="Marsh 1.1.2"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -586,24 +586,24 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.1.0"
+VARIANT="Marsh 1.1.2"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.1.0 \n \l
+CapivaraOS Marsh 1.1.2 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.1.0
+CapivaraOS Marsh 1.1.2
 EOF
 
 install -d %{_sysconfdir}/xdg
 cat > %{_sysconfdir}/xdg/kcm-about-distrorc << 'EOF'
 [General]
 LogoPath=capivaraos-full-logo
-Variant=Marsh 1.1.0
+Variant=Marsh 1.1.2
 Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
@@ -617,7 +617,7 @@ EOF
 # Fedora. Se isso ocorrer na MESMA transacao em que um kernel novo e
 # instalado, o titulo GRUB/BLS desse kernel (gerado pelo kernel-install a
 # partir de NAME/VERSION do os-release) fica gravado como "Fedora Linux ...
-# 44 (Forty Four)" em vez de "CapivaraOS ... Marsh 1.1.0" -- e fica preso
+# 44 (Forty Four)" em vez de "CapivaraOS ... Marsh 1.1.2" -- e fica preso
 # assim permanentemente, mesmo depois do os-release ser corrigido.
 #
 # Este file trigger dispara sempre que qualquer pacote da transacao tocar em
@@ -627,7 +627,7 @@ EOF
 %transfiletriggerin -- %{_sysconfdir}/os-release
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.1.0"
+VERSION="Marsh 1.1.2"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -647,17 +647,17 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.1.0"
+VARIANT="Marsh 1.1.2"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.1.0 \n \l
+CapivaraOS Marsh 1.1.2 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.1.0
+CapivaraOS Marsh 1.1.2
 EOF
 
 for kver in $(ls /lib/modules 2>/dev/null); do
@@ -689,5 +689,13 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
+* Thu Jun 18 2026 CapivaraOS Project <contato@capivaraos.org> - 1.1.2-1
+- Corrige plasma-welcome aparecendo no primeiro login (chave LastSeenVersion)
+- Corrige tema Plymouth sem logo/animacao (plymouth-plugin-script ausente)
+- Corrige dock inferior duplicado por alguns segundos apos login
+- Adiciona tela do Plymouth para atualizacoes offline com percentual
+- Corrige titulo GRUB/BLS revertendo para "Fedora Linux" apos updates do
+  sistema (file trigger em /etc/os-release)
+
 * Sun Jun 14 2026 CapivaraOS Project <contato@capivaraos.org> - 1.1.0-1
 - Versao inicial para Fedora 44 (portado do CapivaraOS Marsh / Debian trixie)

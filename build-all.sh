@@ -16,7 +16,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_DIR=/var/tmp/capivaraos-repo
 RESULT_DIR=/var/tmp/capivaraos-marsh-result
-ISO_NAME=CapivaraOS-Marsh-1.1.0-x86_64.iso
+ISO_NAME=CapivaraOS-Marsh-1.1.2-x86_64.iso
 
 echo "==> 1/4: Instalando dependências (lorax, rpm-build, ImageMagick, git, createrepo_c)..."
 sudo dnf install -y lorax rpm-build ImageMagick git createrepo_c
@@ -43,7 +43,7 @@ sudo livemedia-creator --ks="$FLAT_KS" \
     --no-virt --resultdir="$RESULT_DIR" \
     --project="CapivaraOS Marsh" --make-iso --iso-only \
     --iso-name="$ISO_NAME" \
-    --volid="CapivaraOS Marsh 1.1.0" --variant="CapivaraOS Marsh" \
+    --volid="CapivaraOS Marsh 1.1.2" --variant="CapivaraOS Marsh" \
     --releasever=44
 
 echo
