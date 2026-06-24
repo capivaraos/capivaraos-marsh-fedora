@@ -1,0 +1,29 @@
+name: Solicitação de funcionalidade
+description: Sugira um pacote, tema, mudança de branding ou funcionalidade nova.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Sugestões de pacotes, temas ou mudanças de branding são bem-vindas.
+        Para dúvidas gerais ou ideias ainda não amadurecidas, considere usar
+        as [Discussions](../../discussions) em vez de uma issue.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Que problema isso resolve?
+      description: Qual a motivação para essa mudança?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução proposta
+      description: Como você imagina que isso funcionaria?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas

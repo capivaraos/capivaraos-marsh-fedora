@@ -1,0 +1,50 @@
+name: Relato de bug
+description: Reporte um problema no build, na ISO ou no branding desta distro.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Antes de continuar, confira se já não existe uma issue parecida e se
+        não se trata de uma vulnerabilidade de segurança (nesse caso, veja
+        `SECURITY.md` em vez de abrir uma issue pública).
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do problema
+      description: O que aconteceu? O que você esperava que acontecesse?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      description: Comandos executados, kickstart usado, etc.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Ambiente de build
+      description: Versão do Fedora na máquina de build, arquitetura, versão deste repositório/commit.
+      placeholder: "Fedora 44 x86_64, commit abc1234"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs relevantes
+      description: Cole aqui trechos de log do `livemedia-creator`, do RPM build, ou do `%post`. Use blocos de código.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmação
+      options:
+        - label: Confirmo que isso não é um relato de vulnerabilidade de segurança.
+          required: true

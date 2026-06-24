@@ -162,3 +162,12 @@ qemu-system-x86_64 -m 4096 -enable-kvm \
 Após revisão deste conjunto de arquivos (kickstart + RPM de branding), o
 mesmo processo será aplicado à variante **CapivaraOS** (não-Marsh, em
 `../capivaraos/`).
+
+## Comunidade
+
+- Encontrou um bug ou tem uma sugestão? Abra uma [issue](../../issues/new/choose).
+- Dúvidas gerais ou ideias em aberto? Use as [Discussions](../../discussions).
+- Vulnerabilidade de segurança? Veja [`SECURITY.md`](SECURITY.md) — não abra issue pública.
+- Quer contribuir com código? Veja [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- Este projeto segue o [Código de Conduta](CODE_OF_CONDUCT.md) do CapivaraOS.
+- Licenciado sob [GPLv3](LICENSE).
