@@ -1,0 +1,53 @@
+name: Jira Sync
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  create-jira-ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mapear projeto/tipo do Jira pelas labels
+        id: map
+        env:
+          LABELS_JSON: ${{ toJson(github.event.issue.labels.*.name) }}
+        run: |
+          if echo "$LABELS_JSON" | grep -qi '"bug"'; then
+            echo "project=BUG" >> "$GITHUB_OUTPUT"
+            echo "issuetype=Bug" >> "$GITHUB_OUTPUT"
+          else
+            echo "project=FEAT" >> "$GITHUB_OUTPUT"
+            echo "issuetype=Task" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Criar ticket no Jira
+        id: create
+        env:
+          JIRA_BASE_URL: ${{ vars.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ vars.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          PREFIX: "[MARSH]"
+          REPO_NAME: ${{ github.event.repository.name }}
+          REPO_FULL: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          PROJECT: ${{ steps.map.outputs.project }}
+          ISSUETYPE: ${{ steps.map.outputs.issuetype }}
+        run: python3 .github/scripts/create_jira_issue.py
+
+      - name: Comentar na issue (sem expor o Jira)
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "Obrigado pelo relato! Estamos rastreando isso internamente."
