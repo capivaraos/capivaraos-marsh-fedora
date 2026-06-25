@@ -25,8 +25,20 @@ echo "==> 2/4: Construindo RPM capivaraos-branding..."
 "$SCRIPT_DIR/rpm/build-rpm.sh"
 
 echo "==> 3/4: Criando repositório local em ${REPO_DIR}..."
+# BUG CORRIGIDO (2026-06-25): ~/rpmbuild/RPMS/noarch/ acumula RPMs
+# "capivaraos-branding" de TODAS as spins buildadas na mesma máquina (Marsh,
+# Pup, Snout). Copiar com glob "capivaraos-branding-*.rpm" SEM filtro de
+# versão (como antes) pegaria TODOS eles, e um "dnf update"/instalação
+# poderia escolher o de outra spin (Release mais alto "ganha" na
+# comparação de NEVRA, mesmo entre pacotes de spins diferentes — já
+# aconteceu de fato com Pup vs. Snout, que compartilham Version=1.0.0).
+# Agora resolvemos a NEVRA EXATA deste spec (Version E Release) via
+# "rpmspec -q", garantindo que copiamos só o RPM desta spin.
+NEVRA=$(rpmspec -q --qf '%{name}-%{version}-%{release}.%{arch}\n' "$SCRIPT_DIR/rpm/capivaraos-branding.spec" | head -1)
+RPM_FILE="$HOME/rpmbuild/RPMS/noarch/${NEVRA}.rpm"
+[ -f "$RPM_FILE" ] || { echo "ERRO: RPM esperado não encontrado: ${RPM_FILE}" >&2; exit 1; }
 mkdir -p "$REPO_DIR"
-cp -v "$HOME"/rpmbuild/RPMS/noarch/capivaraos-branding-*.rpm "$REPO_DIR/"
+cp -v "$RPM_FILE" "$REPO_DIR/"
 createrepo_c "$REPO_DIR"
 
 echo "==> 4/4: Gerando ISO com livemedia-creator (pode levar bastante tempo)..."
