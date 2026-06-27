@@ -49,6 +49,7 @@ sudo rm -rf "$RESULT_DIR"
 # isso "achatamos" o kickstart num único arquivo sem %include antes de
 # chamar o livemedia-creator. Ver kickstart/ks-flatten.py.
 FLAT_KS=/var/tmp/capivaraos-marsh-flat.ks
+sudo rm -f "$FLAT_KS"
 ( cd "$SCRIPT_DIR/kickstart" && python3 ks-flatten.py capivaraos-marsh.ks > "$FLAT_KS" )
 
 sudo livemedia-creator --ks="$FLAT_KS" \
