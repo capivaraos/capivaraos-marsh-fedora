@@ -61,13 +61,6 @@ sudo livemedia-creator --ks="$FLAT_KS" \
     --volid="CapivaraOS Marsh 1.1.3" --variant="CapivaraOS Marsh" \
     --releasever=44
 
-# Logs de diagnóstico do anaconda preservados pelo %post (BUG-29). Traz para o
-# diretório do projeto os que sobreviveram no host, para facilitar a leitura.
-if [ -d /var/tmp/capivaraos-compose-logs ]; then
-    sudo cp -f /var/tmp/capivaraos-compose-logs/*.log "$SCRIPT_DIR/" 2>/dev/null || true
-    sudo chown "$(id -un):$(id -gn)" "$SCRIPT_DIR"/packaging.log "$SCRIPT_DIR"/dnf.librepo.log 2>/dev/null || true
-fi
-
 # ── TRAVA: a ISO PRECISA conter os updates do Fedora ────────────────────────
 # As ISOs 1.1.2/1.1.3 saíram só com o Fedora 44 GA porque o repo 'updates' não
 # foi aplicado na composição (BUG-29). Sem esta trava, uma ISO desatualizada
