@@ -12,7 +12,7 @@
 # exigem git clone de repositórios externos durante o build da imagem.
 
 Name:           capivaraos-branding
-Version:        1.1.2
+Version:        1.1.3
 Release:        1%{?dist}
 Summary:        Identidade visual, wallpapers e tema padrão do CapivaraOS Marsh
 
@@ -566,7 +566,7 @@ plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
 # prevalece independente da ordem de instalacao dos pacotes.
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.1.2"
+VERSION="Marsh 1.1.3"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -586,48 +586,64 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.1.2"
+VARIANT="Marsh 1.1.3"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.1.2 \n \l
+CapivaraOS Marsh 1.1.3 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.1.2
+CapivaraOS Marsh 1.1.3
 EOF
 
 install -d %{_sysconfdir}/xdg
 cat > %{_sysconfdir}/xdg/kcm-about-distrorc << 'EOF'
 [General]
 LogoPath=capivaraos-full-logo
-Variant=Marsh 1.1.2
+Variant=Marsh 1.1.3
 Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
 
 # ── Reaplica os-release apos qualquer atualizacao futura do sistema ────────
-# Como /etc/os-release continua "pertencendo" ao fedora-release-common no
-# rpmdb (so sobrescrevemos o conteudo em %posttrans, sem declarar o arquivo
-# em %files, para evitar conflito na transacao original da ISO), um "dnf
-# update" no sistema instalado que toque o fedora-release-common (mesmo so
-# por dependencia) reescreve o arquivo de volta para o conteudo padrao do
-# Fedora. Se isso ocorrer na MESMA transacao em que um kernel novo e
-# instalado, o titulo GRUB/BLS desse kernel (gerado pelo kernel-install a
-# partir de NAME/VERSION do os-release) fica gravado como "Fedora Linux ...
-# 44 (Forty Four)" em vez de "CapivaraOS ... Marsh 1.1.2" -- e fica preso
-# assim permanentemente, mesmo depois do os-release ser corrigido.
+# Nao declaramos /etc/os-release em %files (evita conflito na transacao da
+# ISO), so sobrescrevemos o conteudo. Logo o arquivo continua pertencendo ao
+# Fedora no rpmdb, e um "dnf update" que toque o pacote dono reescreve tudo de
+# volta para o padrao do Fedora. Se isso acontecer na MESMA transacao em que
+# um kernel novo e instalado, o titulo GRUB/BLS desse kernel (que o
+# kernel-install gera a partir de NAME/VERSION do os-release) fica gravado
+# como "Fedora Linux ... 44 (Forty Four)" -- e fica preso assim para sempre,
+# mesmo depois do os-release ser corrigido.
 #
-# Este file trigger dispara sempre que qualquer pacote da transacao tocar em
-# /etc/os-release, reescreve nosso conteudo, e regenera a entrada BLS de
-# todos os kernels instalados (kernel-install add) para garantir que o
-# titulo reflita o os-release correto independente da ordem dos scriptlets.
-%transfiletriggerin -- %{_sysconfdir}/os-release
+# Geografia dos arquivos no Fedora 44 (os dois sao de pacotes DIFERENTES):
+#
+#   /etc/os-release      -> symlink para ../usr/lib/os-release,
+#                           pertence a fedora-release-common
+#   /usr/lib/os-release  -> arquivo com o conteudo REAL,
+#                           pertence a fedora-release-identity-basic
+#
+# ATENCAO -- NAO troque o prefixo abaixo por um caminho de arquivo exato
+# (ex.: /usr/lib/os-release). Verificado empiricamente em container fedora:44
+# (2026-07-17): o %transfiletriggerin casa APENAS com prefixos de DIRETORIO e
+# NUNCA com caminhos de arquivo exatos -- um trigger "-- /usr/lib/os-release"
+# jamais dispara. (Ja o %filetriggerin casa com caminho exato, mas roda logo
+# apos cada pacote, e nao no fim da transacao, o que reintroduz a corrida com
+# o kernel-install.) Foi essa a armadilha da 1.1.2, cujo trigger
+# "-- /etc/os-release" era codigo morto: nunca disparou uma unica vez.
+#
+# Por isso vigiamos o diretorio /usr/lib (dirname do arquivo que importa).
+# Esse prefixo dispara em quase toda transacao, entao a guarda logo abaixo
+# faz o caso comum sair de imediato; so pagamos o kernel-install quando o
+# os-release realmente foi revertido.
+%transfiletriggerin -- %{_prefix}/lib
+# Caso comum: nosso os-release intacto, nada a fazer.
+grep -q '^NAME="CapivaraOS"' %{_prefix}/lib/os-release 2>/dev/null && exit 0
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.1.2"
+VERSION="Marsh 1.1.3"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -647,17 +663,17 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.1.2"
+VARIANT="Marsh 1.1.3"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.1.2 \n \l
+CapivaraOS Marsh 1.1.3 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.1.2
+CapivaraOS Marsh 1.1.3
 EOF
 
 for kver in $(ls /lib/modules 2>/dev/null); do
@@ -689,6 +705,18 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
+* Fri Jul 17 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.3-1
+- Corrige titulo "Fedora Linux" no GRUB apos o primeiro update: o file
+  trigger de 1.1.2 vigiava so /etc/os-release (symlink, do
+  fedora-release-common) e nunca disparava quando o
+  fedora-release-identity-basic -- dono do /usr/lib/os-release, que guarda o
+  conteudo real -- era atualizado sozinho. Agora vigia os dois caminhos.
+- Corrige ISO saindo com o Fedora 44 GA (~1068 pacotes / 7,4 GiB de update no
+  primeiro boot): o anaconda nao expande $releasever nas linhas "repo" do
+  kickstart, e o mirrorlist responde 200 + "invalid repo or arch" sem nenhum
+  mirror, deixando o repo "updates" vazio silenciosamente. Ver
+  kickstart/upstream/fedora-repo.ks.
+
 * Thu Jun 18 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.2-1
 - Corrige plasma-welcome aparecendo no primeiro login (chave LastSeenVersion)
 - Corrige tema Plymouth sem logo/animacao (plymouth-plugin-script ausente)

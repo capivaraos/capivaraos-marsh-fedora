@@ -12,7 +12,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-VERSION="1.1.2"
+VERSION="1.1.3"
 NAME="capivaraos-branding"
 WORKDIR="$(mktemp -d)"
 SRCDIR="${WORKDIR}/${NAME}-${VERSION}"
