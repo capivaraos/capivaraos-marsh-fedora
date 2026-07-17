@@ -52,12 +52,57 @@ FLAT_KS=/var/tmp/capivaraos-marsh-flat.ks
 sudo rm -f "$FLAT_KS"
 ( cd "$SCRIPT_DIR/kickstart" && python3 ks-flatten.py capivaraos-marsh.ks > "$FLAT_KS" )
 
+LIVEMEDIA_LOG="$SCRIPT_DIR/livemedia.log"
 sudo livemedia-creator --ks="$FLAT_KS" \
     --no-virt --resultdir="$RESULT_DIR" \
+    --logfile="$LIVEMEDIA_LOG" \
     --project="CapivaraOS Marsh" --make-iso --iso-only \
     --iso-name="$ISO_NAME" \
     --volid="CapivaraOS Marsh 1.1.3" --variant="CapivaraOS Marsh" \
     --releasever=44
+
+# Logs de diagnóstico do anaconda preservados pelo %post (BUG-29). Traz para o
+# diretório do projeto os que sobreviveram no host, para facilitar a leitura.
+if [ -d /var/tmp/capivaraos-compose-logs ]; then
+    sudo cp -f /var/tmp/capivaraos-compose-logs/*.log "$SCRIPT_DIR/" 2>/dev/null || true
+    sudo chown "$(id -un):$(id -gn)" "$SCRIPT_DIR"/packaging.log "$SCRIPT_DIR"/dnf.librepo.log 2>/dev/null || true
+fi
+
+# ── TRAVA: a ISO PRECISA conter os updates do Fedora ────────────────────────
+# As ISOs 1.1.2/1.1.3 saíram só com o Fedora 44 GA porque o repo 'updates' não
+# foi aplicado na composição (BUG-29). Sem esta trava, uma ISO desatualizada
+# passa batido até o usuário ver ~1068 pacotes de update no primeiro boot.
+# Comparamos o kernel que entrou na ISO com o mais novo do repo 'updates'.
+echo
+echo "==> Verificando se a ISO recebeu os updates do Fedora..."
+ISO_KERNEL=$(grep -o "vmlinuz-[0-9][^ ']*" "$LIVEMEDIA_LOG" 2>/dev/null \
+    | sed 's/vmlinuz-//; s/\.x86_64$//' | sort -V | tail -1)
+_TMPREPO=$(mktemp -d)
+cat > "$_TMPREPO/ucheck.repo" <<EOF
+[ucheck]
+name=ucheck
+mirrorlist=https://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f44&arch=x86_64
+enabled=1
+EOF
+LATEST_KERNEL=$(dnf -q --setopt=reposdir="$_TMPREPO" --disablerepo='*' --enablerepo=ucheck \
+    --releasever=44 repoquery --qf '%{version}-%{release}\n' kernel-core 2>/dev/null \
+    | sort -V | tail -1)
+rm -rf "$_TMPREPO"
+
+if [ -z "$ISO_KERNEL" ]; then
+    echo "AVISO: não consegui extrair o kernel da ISO de ${LIVEMEDIA_LOG}; trava pulada." >&2
+elif [ -z "$LATEST_KERNEL" ]; then
+    echo "AVISO: não consegui consultar o repo updates (rede?); trava pulada." >&2
+elif [ "$ISO_KERNEL" != "$LATEST_KERNEL" ]; then
+    echo "ERRO: a ISO saiu com kernel ${ISO_KERNEL}, mas o repo updates tem ${LATEST_KERNEL}." >&2
+    echo "      O repo 'updates' NÃO foi aplicado — a ISO está DESATUALIZADA (BUG-29)." >&2
+    echo "      Logs de diagnóstico do anaconda para descobrir o porquê:" >&2
+    echo "        - host:  ${SCRIPT_DIR}/packaging.log e dnf.librepo.log (se sobreviveram)" >&2
+    echo "        - ISO:   /var/log/capivaraos-compose/ (monte a ISO para ler)" >&2
+    exit 1
+else
+    echo "==> OK: ISO com kernel ${ISO_KERNEL} (bate com o repo updates)."
+fi
 
 echo
 echo "==> Concluído! ISO em: ${RESULT_DIR}/${ISO_NAME}"

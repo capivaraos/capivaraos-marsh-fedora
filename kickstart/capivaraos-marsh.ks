@@ -123,3 +123,8 @@ ImageMagick
 # =============================================================================
 %include capivaraos-post-branding.ks
 %include capivaraos-post-theme.ks
+
+# DIAGNÓSTICO TEMPORÁRIO (BUG-29) — remover quando o repo 'updates' estiver
+# resolvido. Preserva os logs de composição do anaconda para descobrir por que
+# o repo 'updates' não contribui. Ver kickstart/capivaraos-diag-updates.ks.
+%include capivaraos-diag-updates.ks
