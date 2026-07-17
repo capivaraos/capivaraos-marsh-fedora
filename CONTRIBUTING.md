@@ -6,10 +6,15 @@ os scripts de build e o pacote RPM de branding usados para gerar a ISO do
 
 ## Antes de abrir uma issue
 
-- **Bugs e problemas de build**: abra uma [issue](../../issues/new/choose)
-  usando o template de relato de bug. Inclua a versão do Fedora usada na
-  máquina de build, o comando exato executado e os logs relevantes (veja
-  "Logs úteis" no `README.md`).
+- **Problemas ao usar o CapivaraOS instalado** (algo não funciona no
+  sistema, no visual, num aplicativo): abra uma
+  [issue](../../issues/new/choose) com o template de relato de bug. Você
+  **não precisa** saber construir a ISO para reportar — no campo de
+  ambiente, informe apenas a versão da ISO que instalou (veja em
+  *Configurações do Sistema → Sobre este Sistema*) e o modelo da máquina.
+- **Bugs e problemas de build** (você está gerando a própria ISO): mesmo
+  template, mas inclua a versão do Fedora da máquina de build, o comando
+  exato executado e os logs relevantes (veja "Logs úteis" no `README.md`).
 - **Sugestões de pacote, tema ou funcionalidade**: abra uma issue com o
   template de solicitação de funcionalidade.
 - **Dúvidas gerais, "como faço para...", ideias em aberto**: use as
@@ -17,6 +22,39 @@ os scripts de build e o pacote RPM de branding usados para gerar a ISO do
   reservadas para itens de trabalho rastreáveis.
 - **Vulnerabilidades de segurança**: não abra uma issue pública — siga o
   processo descrito em [`SECURITY.md`](SECURITY.md).
+
+## O que acontece depois que você abre uma issue
+
+Queremos que ninguém fique no escuro esperando resposta, então o processo é
+este:
+
+1. **Registro automático.** Assim que a issue é aberta, ela é espelhada no
+   nosso rastreador interno e você recebe um comentário de confirmação. Isso
+   é automático e não significa que alguém já leu o conteúdo.
+2. **Triagem.** Um mantenedor lê a issue e decide se ela é aceita, precisa
+   de mais informação, ou está fora de escopo. É aqui que perguntamos
+   detalhes que faltaram — sem eles, muita coisa não é reproduzível.
+3. **Priorização.** Issues aceitas entram na fila. Nem tudo que é aceito é
+   feito logo: corrigir algo que quebra o sistema para muita gente passa na
+   frente de um ajuste visual.
+4. **Resolução.** Quando a correção sai, a issue é fechada com uma
+   referência à mudança e à versão em que ela chega.
+
+Sobre expectativas, sendo honestos: o CapivaraOS é mantido por uma equipe
+muito pequena. Não prometemos prazo de resposta. Uma issue pode ficar aberta
+um bom tempo sem que isso signifique rejeição — e uma issue bem escrita, com
+passos de reprodução claros, sempre anda mais rápido que um relato vago.
+
+**O que ajuda a sua issue a andar:**
+
+- Passos que reproduzem o problema numa instalação limpa.
+- O que você esperava que acontecesse e o que aconteceu.
+- Se o problema aparece logo após instalar ou só depois de atualizar.
+- Fotos da tela quando o problema é visual ou acontece no boot.
+
+**O que atrasa:** relatos como "não funciona", várias reclamações diferentes
+empilhadas numa issue só, ou pedidos de suporte que caberiam melhor nas
+Discussions.
 
 ## Como contribuir com código
 
