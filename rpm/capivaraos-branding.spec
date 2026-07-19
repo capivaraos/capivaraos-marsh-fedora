@@ -12,7 +12,7 @@
 # exigem git clone de repositórios externos durante o build da imagem.
 
 Name:           capivaraos-branding
-Version:        1.1.3
+Version:        1.2.1
 Release:        1%{?dist}
 Summary:        Identidade visual, wallpapers e tema padrão do CapivaraOS Marsh
 
@@ -566,7 +566,7 @@ plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
 # prevalece independente da ordem de instalacao dos pacotes.
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.1.3"
+VERSION="Marsh 1.2.1"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -586,24 +586,24 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.1.3"
+VARIANT="Marsh 1.2.1"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.1.3 \n \l
+CapivaraOS Marsh 1.2.1 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.1.3
+CapivaraOS Marsh 1.2.1
 EOF
 
 install -d %{_sysconfdir}/xdg
 cat > %{_sysconfdir}/xdg/kcm-about-distrorc << 'EOF'
 [General]
 LogoPath=capivaraos-full-logo
-Variant=Marsh 1.1.3
+Variant=Marsh 1.2.1
 Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
@@ -643,7 +643,7 @@ EOF
 grep -q '^NAME="CapivaraOS"' %{_prefix}/lib/os-release 2>/dev/null && exit 0
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.1.3"
+VERSION="Marsh 1.2.1"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -663,17 +663,17 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.1.3"
+VARIANT="Marsh 1.2.1"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.1.3 \n \l
+CapivaraOS Marsh 1.2.1 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.1.3
+CapivaraOS Marsh 1.2.1
 EOF
 
 for kver in $(ls /lib/modules 2>/dev/null); do
@@ -705,6 +705,16 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
+* Sun Jul 19 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.1-1
+- Nova identidade visual: logo do CapivaraOS trocada (capivara "andando" no
+  lugar da sentada) em todos os wallpapers (cor solida + foto), icones,
+  logo do "Sobre o Sistema", splash do Plymouth e tela de login SDDM.
+- Motivo: a logo anterior tinha semelhanca com um desenho de banco de
+  imagens (Vecteezy); a nova e original.
+- Wallpapers de cor solida agora sao reproduziveis via
+  branding/regen-solid-wallpapers.sh (novo); os de foto continuam via
+  branding/regen-photo-wallpapers.sh.
+
 * Fri Jul 17 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.3-1
 - Corrige titulo "Fedora Linux" no GRUB apos o primeiro update: o file
   trigger de 1.1.2 vigiava so /etc/os-release (symlink, do
