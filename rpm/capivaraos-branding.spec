@@ -36,9 +36,8 @@ Conflicts:      fedora-logos
 %description
 Pacote de identidade visual do CapivaraOS Marsh: wallpapers (incluindo as
 fotos de capivaras do Wikimedia Commons, CC BY-SA), conjunto de ícones
-"capivaraos-logo", "capivaraos-full-logo" e "capivaraos-head", tema
-Plymouth de boot, tela de
-login SDDM, /etc/os-release, /etc/issue, configuração padrão do Plasma
+"capivaraos-logo", "capivaraos-full-logo" e "capivaraos-head", tema Plymouth
+de boot, tela de login SDDM, /etc/os-release, /etc/issue, configuração padrão do Plasma
 (Breeze Dark + wallpaper CapivaraOS) e o layout de painéis estilo macOS
 (menu global no topo + dock inferior).
 
@@ -70,7 +69,8 @@ done
 
 # ── 2b. Ícones hicolor "capivaraos-head" (só a cabeça da capivara) ──────────
 # Usado como ícone do lançador de aplicativos (kickoff) no dock, no lugar do
-# logo do KDE. Fonte: icons/capivaraos-head.png (200x200, canvas quadrado).
+# logo do KDE. Fonte: icons/capivaraos-head.png (215x215, canvas quadrado) —
+# silhueta BRANCA, para combinar com o painel/dock escuro do Breeze Dark.
 for SIZE in 16 22 24 32 48 64 96 128 256 512; do
     mkdir -p "build/icons/hicolor/${SIZE}x${SIZE}/apps"
     convert icons/capivaraos-head.png -resize "${SIZE}x${SIZE}" \
@@ -741,8 +741,9 @@ done
   "Instalar CapivaraOS" (Live.qml, opacity 0.1), e com o logo completo o
   nome aparecia duplicado por tras do botao. O KCM "Sobre este Sistema"
   nao muda: ele usa LogoPath= do kcm-about-distrorc (capivaraos-full-logo).
-- Novo conjunto de icones "capivaraos-head" (so a cabeca da capivara) e o
-  lancador de aplicativos do dock passa a usa-lo no lugar do logo do KDE.
+- Novo conjunto de icones "capivaraos-head" (so a cabeca da capivara, em
+  silhueta branca) e o lancador de aplicativos do dock passa a usa-lo no
+  lugar do logo do KDE.
 
 * Fri Jul 17 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.3-1
 - Corrige titulo "Fedora Linux" no GRUB apos o primeiro update: o file
