@@ -47,6 +47,35 @@ echo 'LANGUAGE=pt_BR:en_US' >> /etc/locale.conf
 # manualmente pelo menu, se o usuário quiser.)
 rm -f /etc/xdg/autostart/org.kde.plasma-welcome.desktop
 
+# ── Welcome Center do live: forca o estilo QQC2 do Breeze ──────────────────
+# Na sessao LIVE o plasma-welcome continua aparecendo (o modulo kded
+# kded_plasma_welcome o lanca sempre que detecta ambiente live). Nessa tela o
+# botao "Instalar CapivaraOS" vinha com o nome escrito DUAS vezes: uma pelo
+# contentItem customizado do ApplicationIcon.qml (o rotulo branco, correto) e
+# outra pelo proprio QStyle, que o ToolButton do qqc2-desktop-style pinta no
+# background — essa segunda caia bem atras da logo da capivara.
+#
+#   qqc2-desktop-style/org.kde.desktop/ToolButton.qml:
+#       background: StylePrivate.StyleItem {
+#           text: controlRoot.Kirigami.MnemonicData.mnemonicLabel
+#           properties: { "toolButtonStyle": Qt.ToolButtonTextBesideIcon, ... }
+#       }
+#
+# O ToolButton do estilo org.kde.breeze (qqc2-breeze-style) e 100% QML e nao
+# pinta rotulo no background, entao o fantasma some. Como o kded lanca o
+# binario direto — KIO::CommandLauncherJob("plasma-welcome") — e nao a linha
+# Exec= do .desktop, nao adianta editar o .desktop: trocamos o binario por um
+# wrapper que injeta a variavel de ambiente. Afeta SOMENTE o plasma-welcome.
+if [ -x /usr/bin/plasma-welcome ] && [ ! -e /usr/bin/plasma-welcome-real ]; then
+    mv /usr/bin/plasma-welcome /usr/bin/plasma-welcome-real
+    cat > /usr/bin/plasma-welcome << 'WRAPEOF'
+#!/bin/sh
+# Wrapper do CapivaraOS — ver capivaraos-post-branding.ks.
+exec env QT_QUICK_CONTROLS_STYLE=org.kde.breeze /usr/bin/plasma-welcome-real "$@"
+WRAPEOF
+    chmod 0755 /usr/bin/plasma-welcome
+fi
+
 # ── Ícone "Instalar CapivaraOS" — APENAS na sessão live ─────────────────────
 # O instalador é fornecido pelo Anaconda live via
 # /usr/share/applications/liveinst.desktop (NoDisplay=true). Em sessões live, o

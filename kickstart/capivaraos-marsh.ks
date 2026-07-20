@@ -61,6 +61,15 @@ plymouth-plugin-script
 -plasma-welcome-fedora
 plasma-welcome
 
+# Estilo QQC2 do Breeze (100% QML). Usado APENAS pelo plasma-welcome, via o
+# wrapper criado em capivaraos-post-branding.ks. Motivo: o ToolButton do
+# qqc2-desktop-style (estilo padrao) desenha o rotulo do botao tambem no
+# background, pelo QStyle; como o ApplicationIcon.qml do plasma-welcome
+# substitui o contentItem por icone+titulo, o texto "Instalar CapivaraOS"
+# aparecia DUAS vezes na tela de boas-vindas do live — a segunda por tras da
+# capivara. O ToolButton do org.kde.breeze nao pinta rotulo no background.
+qqc2-breeze-style
+
 # Fedora Media Writer não é necessário e tem branding/conteúdo padrão do Fedora
 -mediawriter
 
