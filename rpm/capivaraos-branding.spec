@@ -714,6 +714,11 @@ done
 - Wallpapers de cor solida agora sao reproduziveis via
   branding/regen-solid-wallpapers.sh (novo); os de foto continuam via
   branding/regen-photo-wallpapers.sh.
+- icons/capivaraos-logo.png passa a ser apenas a capivara (sem o texto
+  "CapivaraOS"), como o build sempre pressupos: evita o nome duplicado/
+  sobreposto no lancador "Instalar CapivaraOS".
+- Wallpapers de foto: marca d'agua e credito subiram (45->120 e 104->130 px
+  a partir da base) para nao ficarem atras do dock inferior.
 
 * Fri Jul 17 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.1.3-1
 - Corrige titulo "Fedora Linux" no GRUB apos o primeiro update: o file
