@@ -38,14 +38,32 @@ baixar() {
 
 # Gera um wallpaper final a partir da foto original.
 #   $1 = arquivo original (.jpg)   $2 = saída (.png)   $3 = crédito (texto)
+#
+# ZONA SEGURA — por que a logo e o crédito ficam a 250px das laterais, e não
+# nos 40/24px que seriam o natural para um canto.
+#
+# O wallpaper é 16:9 (1920x1080). Numa tela 4:3 com preenchimento por zoom
+# (no Plasma, "Escalado e Cortado", que é o padrão), o corte é de
+# 1920 - (1080*4/3) = 480px, ou 240px de CADA lado. Tudo a menos de 240px da
+# borda lateral desaparece nessa tela.
+#
+# Com os 40/24px antigos, logo e crédito caíam inteiros na faixa cortada —
+# diagnosticado na spin Pup em 2026-07-21, em VM 4:3, onde o crédito aparecia
+# como "...ann — CC BY-SA 4.0". A spin Marsh tinha exatamente a mesma
+# geometria. Isso é mais que estética: as fotos são CC BY-SA e a licença
+# EXIGE atribuição, então um crédito cortado é um problema de licenciamento.
+#
+# 250px dá 10px de folga sobre os 240 necessários. O deslocamento vertical
+# (+120/+130) é separado e existe por outro motivo: manter logo e crédito
+# acima do dock inferior.
 gerar() {
     local orig="$1" saida="$2" credito="$3"
     convert "$orig" \
         -resize 1920x1080^ -gravity center -extent 1920x1080 \
-        "${TMP}/logo-branca.png" -gravity southeast -geometry +40+120 -composite \
+        "${TMP}/logo-branca.png" -gravity southeast -geometry +250+120 -composite \
         -gravity southwest -font Liberation-Sans -pointsize 22 \
         -undercolor '#00000066' -fill white \
-        -annotate +24+130 "  ${credito}  " \
+        -annotate +250+130 "  ${credito}  " \
         "$saida"
     echo "  gerado: $(basename "$saida")"
 }

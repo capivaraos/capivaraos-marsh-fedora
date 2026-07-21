@@ -12,8 +12,12 @@
 # exigem git clone de repositórios externos durante o build da imagem.
 
 Name:           capivaraos-branding
-Version:        1.2.1
-Release:        1%{?dist}
+Version:        1.2.2
+# Sufixo ".marsh": as tres spins constroem um pacote com este MESMO Name e
+# compartilham ~/rpmbuild, entao sem ele duas spins na mesma Version-Release
+# geram nomes de arquivo identicos -- ja causou dois incidentes (ver BUG-30).
+# Com o sufixo a colisao e impossivel por construcao.
+Release:        1%{?dist}.marsh
 Summary:        Identidade visual, wallpapers e tema padrão do CapivaraOS Marsh
 
 License:        CC-BY-SA-4.0 AND MIT
@@ -582,7 +586,7 @@ plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
 # prevalece independente da ordem de instalacao dos pacotes.
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.2.1"
+VERSION="Marsh 1.2.2"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -602,24 +606,24 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.2.1"
+VARIANT="Marsh 1.2.2"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.2.1 \n \l
+CapivaraOS Marsh 1.2.2 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.2.1
+CapivaraOS Marsh 1.2.2
 EOF
 
 install -d %{_sysconfdir}/xdg
 cat > %{_sysconfdir}/xdg/kcm-about-distrorc << 'EOF'
 [General]
 LogoPath=capivaraos-full-logo
-Variant=Marsh 1.2.1
+Variant=Marsh 1.2.2
 Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
@@ -659,7 +663,7 @@ EOF
 grep -q '^NAME="CapivaraOS"' %{_prefix}/lib/os-release 2>/dev/null && exit 0
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.2.1"
+VERSION="Marsh 1.2.2"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -679,17 +683,17 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.2.1"
+VARIANT="Marsh 1.2.2"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.2.1 \n \l
+CapivaraOS Marsh 1.2.2 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.2.1
+CapivaraOS Marsh 1.2.2
 EOF
 
 for kver in $(ls /lib/modules 2>/dev/null); do
@@ -722,6 +726,20 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
+* Tue Jul 21 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.2-1
+- Zona segura nos wallpapers de foto: a logo e o credito de autoria sairam de
+  40px/24px das laterais para 250px. Numa tela 4:3 exibindo um wallpaper 16:9
+  com preenchimento por zoom ("Escalado e Cortado", padrao do Plasma), o corte
+  e de 240px de CADA lado -- logo e credito caiam inteiros na faixa cortada.
+  Diagnosticado na spin Pup em VM 4:3, onde o credito aparecia truncado como
+  "...ann - CC BY-SA 4.0"; a Marsh tinha exatamente a mesma geometria, entao a
+  1.2.1 publicada perde a atribuicao nesses monitores. As fotos sao CC BY-SA e
+  a licenca EXIGE atribuicao -- e um problema de licenciamento, nao de layout.
+  O deslocamento vertical (+120/+130) nao mudou: existe para manter logo e
+  credito acima do dock.
+- Sufixo ".marsh" no Release, pelo mesmo motivo do build-rpm.sh (BUG-30):
+  torna impossivel uma spin consumir o RPM de outra.
+
 * Sun Jul 19 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.1-1
 - Nova identidade visual: logo do CapivaraOS trocada (capivara "andando" no
   lugar da sentada) em todos os wallpapers (cor solida + foto), icones,

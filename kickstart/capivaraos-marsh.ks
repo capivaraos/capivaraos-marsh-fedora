@@ -13,8 +13,8 @@
 #   livemedia-creator --ks=/var/tmp/capivaraos-marsh-flat.ks \
 #       --no-virt --resultdir=/var/tmp/capivaraos-marsh-result \
 #       --project="CapivaraOS Marsh" --make-iso --iso-only \
-#       --iso-name=CapivaraOS-Marsh-1.2.1-x86_64.iso \
-#       --volid="CapivaraOS Marsh 1.2.1" --variant="CapivaraOS Marsh" \
+#       --iso-name=CapivaraOS-Marsh-1.2.2-x86_64.iso \
+#       --volid="CapivaraOS Marsh 1.2.2" --variant="CapivaraOS Marsh" \
 #       --releasever=44
 #
 # NOTA: o anaconda resolve "%include caminho.ks" em relação ao seu próprio
