@@ -176,7 +176,15 @@ DEFAULT_WP=%{_datadir}/backgrounds/capivaraos/capivaraos-desktop-foto-natacao.pn
 
 # ── Wallpapers (arquivos originais + créditos) ──────────────────────────────
 install -d %{buildroot}%{_datadir}/backgrounds/capivaraos
-install -m 0644 backgrounds/*.png %{buildroot}%{_datadir}/backgrounds/capivaraos/
+# NAO instalamos backgrounds/CapivaraOS_Logo.png: apesar de morar nesta pasta,
+# ela nao e um wallpaper -- e a arte-mestre (1536x1024) da qual os wallpapers
+# sao derivados. Instalada aqui, aparecia no seletor de papel de parede como
+# uma opcao escolhivel e, ao ser aplicada, saia com a logo gigante e cortada
+# pelo painel (visto na Pup 1.1.1 em 2026-07-21).
+for WP in backgrounds/*.png; do
+    [ "$(basename "$WP")" = "CapivaraOS_Logo.png" ] && continue
+    install -m 0644 "$WP" %{buildroot}%{_datadir}/backgrounds/capivaraos/
+done
 install -m 0644 backgrounds/CREDITOS.txt %{buildroot}%{_datadir}/backgrounds/capivaraos/
 
 # ── Pixmaps ──────────────────────────────────────────────────────────────────
@@ -737,6 +745,10 @@ done
   a licenca EXIGE atribuicao -- e um problema de licenciamento, nao de layout.
   O deslocamento vertical (+120/+130) nao mudou: existe para manter logo e
   credito acima do dock.
+- A arte-mestre backgrounds/CapivaraOS_Logo.png deixa de ser instalada como
+  papel de parede: o %install usava glob "*.png" e a levava junto, entao ela
+  aparecia no seletor de fundo do Plasma como opcao escolhivel. Diagnosticado
+  na spin Pup; as tres tinham o mesmo defeito.
 - Sufixo ".marsh" no Release, pelo mesmo motivo do build-rpm.sh (BUG-30):
   torna impossivel uma spin consumir o RPM de outra.
 
