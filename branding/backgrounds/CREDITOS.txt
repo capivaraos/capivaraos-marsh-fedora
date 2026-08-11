@@ -8,6 +8,8 @@ e são distribuídas sob a licença Creative Commons Atribuição-CompartilhaIgu
 - capivaraos-desktop-foto-ipe.png
   Baseado em "028 Capybara and Pink Ipê trees in Encontro das Águas State
   Park" de Giles Laurent.
+  Atribuição EXIGIDA pelo autor (gravada verbatim na imagem):
+  © Giles Laurent, gileslaurent.com, License CC BY-SA 4.0
 
 - capivaraos-desktop-foto-capincho.png
   Baseado em "Capincho.jpg" de Gabriel Sparrenberger.
@@ -18,10 +20,14 @@ e são distribuídas sob a licença Creative Commons Atribuição-CompartilhaIgu
 - capivaraos-desktop-foto-natacao.png
   Baseado em "055 Capybara swimming in Encontro das Águas State Park Photo
   by Giles Laurent.jpg" de Giles Laurent.
+  Atribuição EXIGIDA pelo autor (gravada verbatim na imagem):
+  © Giles Laurent, gileslaurent.com, License CC BY-SA 4.0
 
 - capivaraos-desktop-foto-salto.png
   Baseado em "158 Capybara jumping in the river to escape a Jaguar in
   Encontro das Águas State Park Photo by Giles Laurent.jpg" de Giles Laurent.
+  Atribuição EXIGIDA pelo autor (gravada verbatim na imagem):
+  © Giles Laurent, gileslaurent.com, License CC BY-SA 4.0
 
 - capivaraos-desktop-foto-ibera.png
   Baseado em "Carpincho (Hydrochoerus hydrochaeris) Iberá.jpg" de Taragui,
@@ -33,6 +39,11 @@ CapivaraOS no canto inferior direito, além do crédito do autor e da
 licença no canto superior direito ("Foto: <Autor> — CC BY-SA 4.0" ou
 "CC BY-SA 3.0", conforme a licença original). As imagens resultantes
 permanecem licenciadas sob a mesma licença CC BY-SA das fotos originais.
+
+As três fotos de Giles Laurent (ipe, natacao, salto) trazem a atribuição
+EXIGIDA pelo autor, gravada verbatim na imagem: "© Giles Laurent,
+gileslaurent.com, License CC BY-SA 4.0". As demais usam "Foto: <Autor> —
+CC BY-SA <versão>", pois não têm texto de atribuição específico exigido.
 
 Verificação das licenças (Wikimedia Commons API, AttributionRequired=true
 para todas):

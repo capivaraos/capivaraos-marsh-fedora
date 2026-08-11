@@ -70,11 +70,11 @@ gerar() {
 
 # nome no Wikimedia | saída | crédito
 declare -a FOTOS=(
-"028 Capybara and Pink Ipê trees in Encontro das Águas State Park Photo by Giles Laurent.jpg|capivaraos-desktop-foto-ipe.png|Foto: Giles Laurent — CC BY-SA 4.0"
+"028 Capybara and Pink Ipê trees in Encontro das Águas State Park Photo by Giles Laurent.jpg|capivaraos-desktop-foto-ipe.png|© Giles Laurent, gileslaurent.com, License CC BY-SA 4.0"
 "Capincho.jpg|capivaraos-desktop-foto-capincho.png|Foto: Gabriel Sparrenberger — CC BY-SA 4.0"
 "Capivara no Taim.jpg|capivaraos-desktop-foto-taim.png|Foto: Paulo Hopper — CC BY-SA 4.0"
-"055 Capybara swimming in Encontro das Águas State Park Photo by Giles Laurent.jpg|capivaraos-desktop-foto-natacao.png|Foto: Giles Laurent — CC BY-SA 4.0"
-"158 Capybara jumping in the river to escape a Jaguar in Encontro das Águas State Park Photo by Giles Laurent.jpg|capivaraos-desktop-foto-salto.png|Foto: Giles Laurent — CC BY-SA 4.0"
+"055 Capybara swimming in Encontro das Águas State Park Photo by Giles Laurent.jpg|capivaraos-desktop-foto-natacao.png|© Giles Laurent, gileslaurent.com, License CC BY-SA 4.0"
+"158 Capybara jumping in the river to escape a Jaguar in Encontro das Águas State Park Photo by Giles Laurent.jpg|capivaraos-desktop-foto-salto.png|© Giles Laurent, gileslaurent.com, License CC BY-SA 4.0"
 "Carpincho (Hydrochoerus hydrochaeris) Iberá.jpg|capivaraos-desktop-foto-ibera.png|Foto: Taragui — CC BY-SA 3.0"
 )
 
