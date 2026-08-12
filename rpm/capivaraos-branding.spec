@@ -12,7 +12,7 @@
 # exigem git clone de repositórios externos durante o build da imagem.
 
 Name:           capivaraos-branding
-Version:        1.2.2
+Version:        1.2.3
 # Sufixo ".marsh": as tres spins constroem um pacote com este MESMO Name e
 # compartilham ~/rpmbuild, entao sem ele duas spins na mesma Version-Release
 # geram nomes de arquivo identicos -- ja causou dois incidentes (ver BUG-30).
@@ -594,7 +594,7 @@ plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
 # prevalece independente da ordem de instalacao dos pacotes.
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.2.2"
+VERSION="Marsh 1.2.3"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -614,24 +614,24 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.2.2"
+VARIANT="Marsh 1.2.3"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.2.2 \n \l
+CapivaraOS Marsh 1.2.3 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.2.2
+CapivaraOS Marsh 1.2.3
 EOF
 
 install -d %{_sysconfdir}/xdg
 cat > %{_sysconfdir}/xdg/kcm-about-distrorc << 'EOF'
 [General]
 LogoPath=capivaraos-full-logo
-Variant=Marsh 1.2.2
+Variant=Marsh 1.2.3
 Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
@@ -671,7 +671,7 @@ EOF
 grep -q '^NAME="CapivaraOS"' %{_prefix}/lib/os-release 2>/dev/null && exit 0
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.2.2"
+VERSION="Marsh 1.2.3"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -691,17 +691,17 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.2.2"
+VARIANT="Marsh 1.2.3"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.2.2 \n \l
+CapivaraOS Marsh 1.2.3 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.2.2
+CapivaraOS Marsh 1.2.3
 EOF
 
 for kver in $(ls /lib/modules 2>/dev/null); do
@@ -734,6 +734,14 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
+* Wed Aug 12 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.3-1
+- Corrige a atribuicao das fotos de Giles Laurent nos wallpapers: a
+  licenca CC BY-SA 4.0 do autor exige o texto verbatim "(c) Giles
+  Laurent, gileslaurent.com, License CC BY-SA 4.0"; o credito gravado
+  antes ("Foto: Giles Laurent - CC BY-SA 4.0") omitia o dominio
+  gileslaurent.com exigido. Ajustadas as 3 fotos (ipe, natacao, salto)
+  e o CREDITOS.txt. Ver LEG-3.
+
 * Tue Jul 21 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.2-1
 - Zona segura nos wallpapers de foto: a logo e o credito de autoria sairam de
   40px/24px das laterais para 250px. Numa tela 4:3 exibindo um wallpaper 16:9
