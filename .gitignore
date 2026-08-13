@@ -5,5 +5,3 @@ anaconda/
 
 # RPM gerado localmente (ver rpm/build-rpm.sh) e repositorio local de build
 *.rpm
-
-
