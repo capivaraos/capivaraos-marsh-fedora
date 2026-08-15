@@ -17,10 +17,10 @@ Version:        1.2.3
 # compartilham ~/rpmbuild, entao sem ele duas spins na mesma Version-Release
 # geram nomes de arquivo identicos -- ja causou dois incidentes (ver BUG-30).
 # Com o sufixo a colisao e impossivel por construcao.
-Release:        1%{?dist}.marsh
+Release:        2%{?dist}.marsh
 Summary:        Identidade visual, wallpapers e tema padrão do CapivaraOS Marsh
 
-License:        CC-BY-SA-4.0 AND MIT
+License:        GPL-3.0-or-later AND LicenseRef-CapivaraOS-Trademark AND CC-BY-SA-3.0 AND CC-BY-SA-4.0
 URL:            https://capivaraos.org
 BuildArch:      noarch
 
@@ -734,6 +734,18 @@ done
 %{_sysconfdir}/skel/.face.icon
 
 %changelog
+* Fri Aug 14 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.3-2
+- Reconciliacao de licenca/marca (LEG-4): corrige o metadado License: do RPM.
+  Antes "CC-BY-SA-4.0 AND MIT" -- (a) marcava MIT sem nada MIT no pacote (codigo
+  e config do projeto sao GPLv3, como o LICENSE de topo), (b) varria a identidade
+  visual sob CC-BY-SA (contradiz a marca) e (c) omitia CC-BY-SA-3.0 de uma das
+  fotos embarcadas. Agora: GPL-3.0-or-later AND LicenseRef-CapivaraOS-Trademark
+  AND CC-BY-SA-3.0 AND CC-BY-SA-4.0. Correcao de metadado apenas; a atribuicao
+  exigida (CREDITOS.txt + creditos gravados nas imagens) ja estava correta (LEG-3).
+- Adiciona TRADEMARK.md: nome/logo CapivaraOS sao marca do projeto (direitos
+  reservados); codigo GPLv3; wallpapers fotograficos de terceiros CC BY-SA
+  creditados em backgrounds/CREDITOS.txt.
+
 * Wed Aug 12 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.3-1
 - Corrige a atribuicao das fotos de Giles Laurent nos wallpapers: a
   licenca CC BY-SA 4.0 do autor exige o texto verbatim "(c) Giles
