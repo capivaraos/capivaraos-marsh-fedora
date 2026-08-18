@@ -12,12 +12,12 @@
 # exigem git clone de repositórios externos durante o build da imagem.
 
 Name:           capivaraos-branding
-Version:        1.2.3
+Version:        1.2.4
 # Sufixo ".marsh": as tres spins constroem um pacote com este MESMO Name e
 # compartilham ~/rpmbuild, entao sem ele duas spins na mesma Version-Release
 # geram nomes de arquivo identicos -- ja causou dois incidentes (ver BUG-30).
 # Com o sufixo a colisao e impossivel por construcao.
-Release:        2%{?dist}.marsh
+Release:        1%{?dist}.marsh
 Summary:        Identidade visual, wallpapers e tema padrão do CapivaraOS Marsh
 
 License:        GPL-3.0-or-later AND LicenseRef-CapivaraOS-Trademark AND CC-BY-SA-3.0 AND CC-BY-SA-4.0
@@ -542,6 +542,26 @@ X-KDE-autostart-phase=2
 OnlyShowIn=KDE;
 EOF
 
+# ── Perfil do Anaconda: faz o instalador reconhecer o CapivaraOS (BUG-38) ────
+# O Anaconda casa o perfil de instalacao pelo os_id do /etc/os-release. Como o
+# nosso ID e "capivaraos" (nao "fedora"), NENHUM perfil casava e o instalador
+# caia no default de /etc/anaconda/anaconda.conf, que define efi_dir=default.
+# Em UEFI isso faz o gen_grub_cfgstub tentar gravar o stub em
+# /boot/efi/EFI/default (inexistente -- shim/grub2-efi instalam em /EFI/fedora)
+# -> "gen_grub_cfgstub script failed" e a instalacao FALHA no passo do
+# bootloader. So aparece em UEFI real; em VM no modo BIOS/legacy o caminho EFI
+# nem roda (por isso nao pegamos antes). Herdando base_profile=fedora, o
+# CapivaraOS reusa efi_dir=fedora, esquema BTRFS e demais ajustes do Fedora.
+install -d %{buildroot}%{_sysconfdir}/anaconda/profile.d
+cat > %{buildroot}%{_sysconfdir}/anaconda/profile.d/capivaraos.conf << 'EOF'
+[Profile]
+profile_id = capivaraos
+base_profile = fedora
+
+[Profile Detection]
+os_id = capivaraos
+EOF
+
 %post
 # Splash de boot CapivaraOS
 plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
@@ -594,7 +614,7 @@ plymouth-set-default-theme capivaraos >/dev/null 2>&1 || true
 # prevalece independente da ordem de instalacao dos pacotes.
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.2.3"
+VERSION="Marsh 1.2.4"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -614,24 +634,24 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.2.3"
+VARIANT="Marsh 1.2.4"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.2.3 \n \l
+CapivaraOS Marsh 1.2.4 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.2.3
+CapivaraOS Marsh 1.2.4
 EOF
 
 install -d %{_sysconfdir}/xdg
 cat > %{_sysconfdir}/xdg/kcm-about-distrorc << 'EOF'
 [General]
 LogoPath=capivaraos-full-logo
-Variant=Marsh 1.2.3
+Variant=Marsh 1.2.4
 Website=https://capivaraos.org
 UseOSReleaseVersion=true
 EOF
@@ -671,7 +691,7 @@ EOF
 grep -q '^NAME="CapivaraOS"' %{_prefix}/lib/os-release 2>/dev/null && exit 0
 cat > %{_sysconfdir}/os-release << 'EOF'
 NAME="CapivaraOS"
-VERSION="Marsh 1.2.3"
+VERSION="Marsh 1.2.4"
 RELEASE_TYPE=stable
 ID=capivaraos
 ID_LIKE=fedora
@@ -691,17 +711,17 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=44
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=44
-VARIANT="Marsh 1.2.3"
+VARIANT="Marsh 1.2.4"
 VARIANT_ID=marsh
 EOF
 
 cat > %{_sysconfdir}/issue << 'EOF'
-CapivaraOS Marsh 1.2.3 \n \l
+CapivaraOS Marsh 1.2.4 \n \l
 
 EOF
 
 cat > %{_sysconfdir}/issue.net << 'EOF'
-CapivaraOS Marsh 1.2.3
+CapivaraOS Marsh 1.2.4
 EOF
 
 for kver in $(ls /lib/modules 2>/dev/null); do
@@ -732,8 +752,20 @@ done
 %{_sysconfdir}/skel/.config/plasma-welcomerc
 %{_sysconfdir}/skel/.face
 %{_sysconfdir}/skel/.face.icon
+%{_sysconfdir}/anaconda/profile.d/capivaraos.conf
 
 %changelog
+* Tue Aug 18 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.4-1
+- Instala em UEFI real: adiciona /etc/anaconda/profile.d/capivaraos.conf com
+  base_profile=fedora. Sem ele o Anaconda nao casava perfil (ID=capivaraos),
+  caia em efi_dir=default e o gen_grub_cfgstub falhava no fim da instalacao em
+  UEFI ("gen_grub_cfgstub script failed") -- BUG-38. So aparecia em UEFI real;
+  VM em modo BIOS/legacy nao pegava. Herdar fedora reusa efi_dir=fedora.
+- (kickstart) initramfs de build agora --no-hostonly --no-hostonly-cmdline: o
+  sistema instalado passa a achar o disco raiz em hardware com storage diferente
+  do build (BUG-40), em vez de cair em emergency mode ("Not all disks have been
+  found").
+
 * Fri Aug 14 2026 CapivaraOS Project <capivaraos-bot@users.noreply.github.com> - 1.2.3-2
 - Reconciliacao de licenca/marca (LEG-4): corrige o metadado License: do RPM.
   Antes "CC-BY-SA-4.0 AND MIT" -- (a) marcava MIT sem nada MIT no pacote (codigo
