@@ -1,5 +1,14 @@
 # CapivaraOS Marsh — Fedora 44 (KDE Plasma)
 
+> ⚠️ **Série 1 — congelada.** Este repositório guarda a Série 1 do CapivaraOS Marsh,
+> baseada no Fedora 44. O suporte foi encerrado em novembro de 2026 e o código fica
+> aqui **apenas para consulta** — não recebe mais correções.
+>
+> O desenvolvimento atual é a **Série 2** (Fedora 45), em
+> [`capivaraos-marsh`](https://github.com/capivaraos/capivaraos-marsh).
+> Para instalar, veja a [página de download](https://capivaraos.org/pt/download.html)
+> e o [ciclo de vida das versões](https://capivaraos.org/pt/lifecycle.html).
+
 Recriação do **CapivaraOS Marsh** (originalmente um remix Debian 13/trixie +
 live-build + Calamares) como uma live ISO **Fedora 44 KDE Plasma**, usando as
 ferramentas oficiais do projeto Fedora: `kickstart` + `livemedia-creator`
